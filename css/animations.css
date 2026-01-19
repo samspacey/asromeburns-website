@@ -1,0 +1,525 @@
+/* ============================================
+   AS ROME BURNS - ANIMATIONS
+   Inspired by landonorris.com
+   ============================================ */
+
+/* --------------------------------------------
+   CSS Variables for Animation
+   -------------------------------------------- */
+:root {
+  /* Easing curves */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-circ: cubic-bezier(0.85, 0, 0.15, 1);
+
+  /* Durations */
+  --duration-fast: 0.2s;
+  --duration-normal: 0.4s;
+  --duration-slow: 0.6s;
+  --duration-slower: 1s;
+
+  /* Glow effects */
+  --glow-gold: 0 0 20px rgba(245, 197, 24, 0.3);
+  --glow-gold-strong: 0 0 30px rgba(245, 197, 24, 0.5);
+}
+
+/* --------------------------------------------
+   Keyframe Animations
+   -------------------------------------------- */
+
+/* Fade up from below */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade in from left */
+@keyframes fadeLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Fade in from right */
+@keyframes fadeRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Scale up fade */
+@keyframes fadeScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Clip reveal from left (for images) */
+@keyframes clipRevealLeft {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Clip reveal from bottom */
+@keyframes clipRevealUp {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Glow pulse (for active states) */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(245, 197, 24, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 25px 5px rgba(245, 197, 24, 0.25);
+  }
+}
+
+/* Ken Burns zoom (for hero video/images) */
+@keyframes kenBurns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+/* Split text line reveal */
+@keyframes splitReveal {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Draw line from center */
+@keyframes drawLine {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Subtle float */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* --------------------------------------------
+   Scroll Animation Base Classes
+   -------------------------------------------- */
+
+/* Default state: visible (progressive enhancement) */
+.animate-on-scroll {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* With JS enabled: start hidden */
+.js-enabled .animate-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity var(--duration-slow) var(--ease-out-expo),
+              transform var(--duration-slow) var(--ease-out-expo);
+}
+
+/* Visible state (triggered by IntersectionObserver) */
+.js-enabled .animate-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Variant: Fade from left */
+.js-enabled .animate-on-scroll.animate--fade-left {
+  transform: translateX(-40px);
+}
+.js-enabled .animate-on-scroll.animate--fade-left.is-visible {
+  transform: translateX(0);
+}
+
+/* Variant: Fade from right */
+.js-enabled .animate-on-scroll.animate--fade-right {
+  transform: translateX(40px);
+}
+.js-enabled .animate-on-scroll.animate--fade-right.is-visible {
+  transform: translateX(0);
+}
+
+/* Variant: Scale up */
+.js-enabled .animate-on-scroll.animate--scale {
+  transform: scale(0.95);
+}
+.js-enabled .animate-on-scroll.animate--scale.is-visible {
+  transform: scale(1);
+}
+
+/* Variant: Clip reveal */
+.js-enabled .animate-on-scroll.animate--clip-left {
+  clip-path: inset(0 100% 0 0);
+  transform: none;
+  opacity: 1;
+  transition: clip-path var(--duration-slower) var(--ease-out-expo);
+}
+.js-enabled .animate-on-scroll.animate--clip-left.is-visible {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Stagger delay utilities */
+.js-enabled .stagger-1 { transition-delay: 0.1s; }
+.js-enabled .stagger-2 { transition-delay: 0.2s; }
+.js-enabled .stagger-3 { transition-delay: 0.3s; }
+.js-enabled .stagger-4 { transition-delay: 0.4s; }
+.js-enabled .stagger-5 { transition-delay: 0.5s; }
+.js-enabled .stagger-6 { transition-delay: 0.6s; }
+
+/* --------------------------------------------
+   Hero Animations
+   -------------------------------------------- */
+
+/* Ken Burns effect on hero video */
+.hero__bg video,
+.hero__bg img {
+  animation: kenBurns 20s ease-out forwards;
+}
+
+/* Split text container */
+.split-text {
+  overflow: hidden;
+}
+
+.split-text .line {
+  display: block;
+  overflow: hidden;
+}
+
+.split-text .line-inner {
+  display: block;
+}
+
+/* With JS: animate lines */
+.js-enabled .split-text .line-inner {
+  transform: translateY(105%);
+  transition: transform var(--duration-slow) var(--ease-out-expo);
+}
+
+.js-enabled .split-text.is-visible .line-inner {
+  transform: translateY(0);
+}
+
+/* Stagger each line */
+.js-enabled .split-text .line:nth-child(1) .line-inner { transition-delay: 0s; }
+.js-enabled .split-text .line:nth-child(2) .line-inner { transition-delay: 0.1s; }
+.js-enabled .split-text .line:nth-child(3) .line-inner { transition-delay: 0.2s; }
+.js-enabled .split-text .line:nth-child(4) .line-inner { transition-delay: 0.3s; }
+
+/* --------------------------------------------
+   Navigation Scroll Effect
+   -------------------------------------------- */
+
+.nav {
+  transition: background-color var(--duration-normal) ease,
+              box-shadow var(--duration-normal) ease;
+}
+
+.nav.nav--scrolled {
+  background-color: rgba(10, 10, 10, 0.95);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* --------------------------------------------
+   Enhanced Button Effects
+   -------------------------------------------- */
+
+.btn {
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--duration-fast) var(--ease-out-quart),
+              box-shadow var(--duration-fast) var(--ease-out-quart),
+              background-color var(--duration-fast) ease,
+              color var(--duration-fast) ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glow-gold);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* Button shine effect */
+.btn--filled::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.btn--filled:hover::before {
+  left: 100%;
+}
+
+/* --------------------------------------------
+   Enhanced Social Icons
+   -------------------------------------------- */
+
+.social__link {
+  transition: transform var(--duration-fast) var(--ease-out-quart),
+              box-shadow var(--duration-fast) var(--ease-out-quart);
+}
+
+.social__link:hover {
+  transform: scale(1.15) rotate(5deg);
+}
+
+/* Platform-specific glows */
+.social__link--instagram:hover {
+  box-shadow: 0 0 20px rgba(225, 48, 108, 0.4);
+}
+
+.social__link--youtube:hover {
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+}
+
+.social__link--spotify:hover {
+  box-shadow: 0 0 20px rgba(30, 215, 96, 0.4);
+}
+
+.social__link--tiktok:hover {
+  box-shadow: 0 0 20px rgba(255, 0, 80, 0.4);
+}
+
+/* --------------------------------------------
+   Music Player Animations
+   -------------------------------------------- */
+
+/* Play button pulse when playing */
+.player__play-btn.is-playing {
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+/* Track list item hover */
+.tracklist__item {
+  transition: transform var(--duration-fast) var(--ease-out-quart),
+              background-color var(--duration-fast) ease,
+              box-shadow var(--duration-fast) ease;
+}
+
+.tracklist__item:hover {
+  transform: translateX(4px);
+  box-shadow: inset 4px 0 0 var(--color-gold);
+}
+
+/* Active track glow */
+.tracklist__item.active {
+  box-shadow: inset 4px 0 0 var(--color-gold),
+              0 0 15px rgba(245, 197, 24, 0.1);
+}
+
+/* Progress bar shimmer */
+.player__progress-fill {
+  position: relative;
+  overflow: hidden;
+}
+
+.player__progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+/* --------------------------------------------
+   Show Card Animations
+   -------------------------------------------- */
+
+.show-card {
+  transition: transform var(--duration-fast) var(--ease-out-quart),
+              box-shadow var(--duration-fast) ease,
+              border-color var(--duration-fast) ease;
+}
+
+.show-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3),
+              0 0 0 1px var(--color-gold);
+  border-color: var(--color-gold);
+}
+
+/* --------------------------------------------
+   Band Page Specific
+   -------------------------------------------- */
+
+/* Band image reveal */
+.js-enabled .band-image {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path var(--duration-slower) var(--ease-out-expo);
+}
+
+.js-enabled .band-image.is-visible {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Band text stagger */
+.js-enabled .band-text p {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--duration-slow) var(--ease-out-expo),
+              transform var(--duration-slow) var(--ease-out-expo);
+}
+
+.js-enabled .band-text.is-visible p {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.js-enabled .band-text p:nth-child(2) { transition-delay: 0.1s; }
+.js-enabled .band-text p:nth-child(3) { transition-delay: 0.2s; }
+.js-enabled .band-text p:nth-child(4) { transition-delay: 0.3s; }
+.js-enabled .band-text p:nth-child(5) { transition-delay: 0.4s; }
+.js-enabled .band-text p:nth-child(6) { transition-delay: 0.5s; }
+
+/* --------------------------------------------
+   Streaming Links
+   -------------------------------------------- */
+
+.streaming-link {
+  transition: transform var(--duration-fast) var(--ease-out-quart),
+              box-shadow var(--duration-fast) ease,
+              border-color var(--duration-fast) ease;
+}
+
+.streaming-link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Platform-specific hover colors */
+.streaming-link[href*="spotify"]:hover {
+  border-color: #1ed760;
+  box-shadow: 0 8px 25px rgba(30, 215, 96, 0.2);
+}
+
+.streaming-link[href*="apple"]:hover {
+  border-color: #fc3c44;
+  box-shadow: 0 8px 25px rgba(252, 60, 68, 0.2);
+}
+
+.streaming-link[href*="youtube"]:hover {
+  border-color: #ff0000;
+  box-shadow: 0 8px 25px rgba(255, 0, 0, 0.2);
+}
+
+.streaming-link[href*="amazon"]:hover,
+.streaming-link[href*="music.amazon"]:hover {
+  border-color: #00a8e1;
+  box-shadow: 0 8px 25px rgba(0, 168, 225, 0.2);
+}
+
+/* --------------------------------------------
+   Newsletter Input Glow
+   -------------------------------------------- */
+
+.newsletter__input {
+  transition: border-color var(--duration-fast) ease,
+              box-shadow var(--duration-fast) ease;
+}
+
+.newsletter__input:focus {
+  box-shadow: 0 0 0 3px rgba(245, 197, 24, 0.2);
+}
+
+/* --------------------------------------------
+   Reduced Motion Support
+   -------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-on-scroll,
+  .js-enabled .animate-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+
+  .hero__bg video,
+  .hero__bg img {
+    animation: none !important;
+  }
+}
