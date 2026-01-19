@@ -372,6 +372,92 @@ html.lenis {
   animation: kenBurns 25s ease-out forwards;
 }
 
+/* --------------------------------------------
+   Hero Hover Reveal Effect
+   -------------------------------------------- */
+.hero {
+  position: relative;
+  cursor: crosshair;
+}
+
+.hero__reveal {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.hero__reveal-text {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 15vw, 12rem);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-gold);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.5s var(--ease-out-expo),
+              transform 0.5s var(--ease-out-expo);
+  text-shadow: 0 0 60px rgba(245, 197, 24, 0.5),
+               0 0 120px rgba(245, 197, 24, 0.3);
+  mix-blend-mode: difference;
+}
+
+/* Reveal on hover */
+.hero:hover .hero__reveal-text {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Dim the main content on hover */
+.hero:hover .hero__content {
+  opacity: 0.3;
+  transform: scale(0.95);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.hero__content {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Video/image brightness change on hover */
+.hero:hover .hero__bg video,
+.hero:hover .hero__bg img {
+  filter: brightness(0.4) contrast(1.2);
+  transition: filter 0.5s ease;
+}
+
+.hero__bg video,
+.hero__bg img {
+  transition: filter 0.5s ease;
+}
+
+/* Spotlight/flashlight cursor effect */
+.hero__spotlight {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0;
+  background: radial-gradient(
+    circle,
+    rgba(245, 197, 24, 0.15) 0%,
+    rgba(245, 197, 24, 0.05) 40%,
+    transparent 70%
+  );
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+  mix-blend-mode: screen;
+}
+
+.hero:hover .hero__spotlight {
+  opacity: 1;
+}
+
 /* Hero content entrance */
 .js-enabled .hero__content {
   opacity: 0;

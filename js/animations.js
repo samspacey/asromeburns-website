@@ -331,6 +331,25 @@
   }
 
   /* --------------------------------------------
+     Hero Spotlight Effect
+     -------------------------------------------- */
+  function initHeroSpotlight() {
+    const hero = document.getElementById('hero');
+    const spotlight = document.getElementById('heroSpotlight');
+
+    if (!hero || !spotlight) return;
+
+    hero.addEventListener('mousemove', (e) => {
+      const rect = hero.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      spotlight.style.left = `${x}px`;
+      spotlight.style.top = `${y}px`;
+    });
+  }
+
+  /* --------------------------------------------
      Initialize All Animations
      -------------------------------------------- */
   function init() {
@@ -341,6 +360,9 @@
 
     // Initialize nav scroll effect
     initNavScroll();
+
+    // Initialize hero spotlight
+    initHeroSpotlight();
 
     // Initialize custom cursor
     new CustomCursor();

@@ -36,14 +36,22 @@
   </nav>
 
   <!-- Hero Section -->
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero__bg">
       <video autoplay muted loop playsinline>
         <source src="videos/hero.mp4" type="video/mp4">
       </video>
       <div class="hero__overlay"></div>
     </div>
-    
+
+    <!-- Spotlight that follows cursor -->
+    <div class="hero__spotlight" id="heroSpotlight"></div>
+
+    <!-- Text revealed on hover -->
+    <div class="hero__reveal">
+      <span class="hero__reveal-text">REACTOR</span>
+    </div>
+
     <div class="hero__content">
       <h1 class="hero__title">THE<br>DEBUT<br>EP</h1>
       <p class="hero__subtitle">Out Now on All Platforms</p>
