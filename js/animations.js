@@ -365,7 +365,7 @@
     });
 
     // Store current scale for combining with wiggle
-    videoContainer.currentScale = 1.8;
+    videoContainer.currentScale = 1.3;
 
     // Smooth wiggle animation
     function animateWiggle() {
@@ -444,8 +444,8 @@
         videoContainer.style.borderRadius = `${borderRadius}px`;
 
         // Smoothly zoom out video to reveal more of portrait frame
-        // Start zoomed in (scale 1.8), end at normal (scale 1.05 for wiggle room)
-        const videoScale = 1.8 - (scrollProgress * 0.75);
+        // Start zoomed in (scale 1.3), end at normal (scale 1.05 for wiggle room)
+        const videoScale = 1.3 - (scrollProgress * 0.25);
         videoContainer.currentScale = Math.max(videoScale, 1.05);
       }
 

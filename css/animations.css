@@ -409,8 +409,8 @@ html.lenis {
   object-position: center center;
   transition: transform 0.15s ease-out;
   transform-origin: center center;
-  /* Start zoomed in to crop the portrait video */
-  transform: scale(1.8);
+  /* Start slightly zoomed to crop the portrait video */
+  transform: scale(1.3);
 }
 
 .hero-scroll__overlay {
