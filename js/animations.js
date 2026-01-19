@@ -331,22 +331,73 @@
   }
 
   /* --------------------------------------------
-     Hero Spotlight Effect
+     Hero Spotlight + Wiggle Effect
      -------------------------------------------- */
   function initHeroSpotlight() {
     const videoContainer = document.getElementById('heroVideoContainer');
     const spotlight = document.getElementById('heroSpotlight');
+    const video = videoContainer?.querySelector('video');
 
     if (!videoContainer || !spotlight) return;
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let currentX = 0;
+    let currentY = 0;
 
     videoContainer.addEventListener('mousemove', (e) => {
       const rect = videoContainer.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
+      // Spotlight follows cursor
       spotlight.style.left = `${x}px`;
       spotlight.style.top = `${y}px`;
+
+      // Calculate mouse position relative to center (-1 to 1)
+      mouseX = (x / rect.width - 0.5) * 2;
+      mouseY = (y / rect.height - 0.5) * 2;
     });
+
+    videoContainer.addEventListener('mouseleave', () => {
+      mouseX = 0;
+      mouseY = 0;
+    });
+
+    // Store current scale for combining with wiggle
+    videoContainer.currentScale = 1.8;
+
+    // Smooth wiggle animation
+    function animateWiggle() {
+      // Ease towards target
+      currentX += (mouseX - currentX) * 0.08;
+      currentY += (mouseY - currentY) * 0.08;
+
+      if (video) {
+        // Subtle rotation and translation based on mouse
+        const rotateY = currentX * 4; // Max 4 degrees
+        const rotateX = -currentY * 3; // Max 3 degrees
+        const translateX = currentX * 15; // Max 15px
+        const translateY = currentY * 12; // Max 12px
+        const scale = videoContainer.currentScale || 1.8;
+
+        video.style.transform = `
+          perspective(1000px)
+          rotateY(${rotateY}deg)
+          rotateX(${rotateX}deg)
+          translateX(${translateX}px)
+          translateY(${translateY}px)
+          scale(${scale})
+        `;
+      }
+
+      requestAnimationFrame(animateWiggle);
+    }
+
+    // Only enable wiggle on desktop
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      animateWiggle();
+    }
   }
 
   /* --------------------------------------------
@@ -380,23 +431,22 @@
         videoContainer.style.left = '0';
 
       } else {
-        // Desktop: Video shrinks and moves to left, revealing full portrait frame
-        const width = 100 - (scrollProgress * 70); // Shrink width from 100% to 30%
-        const borderRadius = scrollProgress * 20; // Add border radius
+        // Desktop: Container shrinks and moves to left
+        const width = 100 - (scrollProgress * 65); // Shrink width from 100% to 35%
+        const height = 100 - (scrollProgress * 10); // Keep height mostly tall
+        const borderRadius = scrollProgress * 24; // Add border radius
+        const left = scrollProgress * 5; // Move left
 
         videoContainer.style.width = `${width}%`;
-        videoContainer.style.height = `${100 - scrollProgress * 10}%`; // Keep height tall
-        videoContainer.style.left = `${scrollProgress * 5}%`;
+        videoContainer.style.height = `${height}%`;
+        videoContainer.style.left = `${left}%`;
         videoContainer.style.top = `${scrollProgress * 5}%`;
         videoContainer.style.borderRadius = `${borderRadius}px`;
-        videoContainer.style.transform = 'none';
 
-        // Switch to contain mode to show full portrait video when scrolled
-        if (scrollProgress > 0.2) {
-          videoContainer.classList.add('show-full');
-        } else {
-          videoContainer.classList.remove('show-full');
-        }
+        // Smoothly zoom out video to reveal more of portrait frame
+        // Start zoomed in (scale 1.8), end at normal (scale 1.05 for wiggle room)
+        const videoScale = 1.8 - (scrollProgress * 0.75);
+        videoContainer.currentScale = Math.max(videoScale, 1.05);
       }
 
       // Fade out video content, fade in text

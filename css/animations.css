@@ -406,15 +406,11 @@ html.lenis {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center top;
-  transition: object-fit 0s, object-position 0.3s ease;
-}
-
-/* When scrolled, show full portrait video */
-.hero-scroll__video-container.show-full video {
-  object-fit: contain;
   object-position: center center;
-  background: var(--color-bg);
+  transition: transform 0.15s ease-out;
+  transform-origin: center center;
+  /* Start zoomed in to crop the portrait video */
+  transform: scale(1.8);
 }
 
 .hero-scroll__overlay {
