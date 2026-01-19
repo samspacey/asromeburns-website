@@ -380,18 +380,23 @@
         videoContainer.style.left = '0';
 
       } else {
-        // Desktop: Video shrinks and moves to left
-        const scale = 1 - (scrollProgress * 0.45); // Scale from 1 to 0.55
-        const translateX = scrollProgress * -25; // Move left (percentage of viewport)
-        const width = 100 - (scrollProgress * 45); // Shrink width
+        // Desktop: Video shrinks and moves to left, revealing full portrait frame
+        const width = 100 - (scrollProgress * 70); // Shrink width from 100% to 30%
         const borderRadius = scrollProgress * 20; // Add border radius
 
         videoContainer.style.width = `${width}%`;
-        videoContainer.style.height = `${100 - scrollProgress * 15}%`;
+        videoContainer.style.height = `${100 - scrollProgress * 10}%`; // Keep height tall
         videoContainer.style.left = `${scrollProgress * 5}%`;
-        videoContainer.style.top = `${scrollProgress * 7.5}%`;
+        videoContainer.style.top = `${scrollProgress * 5}%`;
         videoContainer.style.borderRadius = `${borderRadius}px`;
-        videoContainer.style.transform = `translateX(${translateX}%)`;
+        videoContainer.style.transform = 'none';
+
+        // Switch to contain mode to show full portrait video when scrolled
+        if (scrollProgress > 0.2) {
+          videoContainer.classList.add('show-full');
+        } else {
+          videoContainer.classList.remove('show-full');
+        }
       }
 
       // Fade out video content, fade in text

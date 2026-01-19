@@ -398,6 +398,8 @@ html.lenis {
   transition: all 0.1s linear;
   will-change: transform, width, left, border-radius;
   cursor: crosshair;
+  background: var(--color-bg);
+  overflow: hidden;
 }
 
 .hero-scroll__video-container video {
@@ -405,6 +407,14 @@ html.lenis {
   height: 100%;
   object-fit: cover;
   object-position: center top;
+  transition: object-fit 0s, object-position 0.3s ease;
+}
+
+/* When scrolled, show full portrait video */
+.hero-scroll__video-container.show-full video {
+  object-fit: contain;
+  object-position: center center;
+  background: var(--color-bg);
 }
 
 .hero-scroll__overlay {
