@@ -35,28 +35,41 @@
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <section class="hero" id="hero">
-    <div class="hero__bg">
-      <video autoplay muted loop playsinline>
-        <source src="videos/hero.mp4" type="video/mp4">
-      </video>
-      <div class="hero__overlay"></div>
-    </div>
+  <!-- Hero Section with Scroll Animation -->
+  <section class="hero-scroll" id="heroScroll">
+    <div class="hero-scroll__sticky">
+      <div class="hero-scroll__video-container" id="heroVideoContainer">
+        <video autoplay muted loop playsinline>
+          <source src="videos/hero.mp4" type="video/mp4">
+        </video>
+        <div class="hero-scroll__overlay"></div>
 
-    <!-- Spotlight that follows cursor -->
-    <div class="hero__spotlight" id="heroSpotlight"></div>
+        <!-- Spotlight that follows cursor -->
+        <div class="hero__spotlight" id="heroSpotlight"></div>
 
-    <!-- Text revealed on hover -->
-    <div class="hero__reveal">
-      <span class="hero__reveal-text">REACTOR</span>
-    </div>
+        <div class="hero-scroll__video-content" id="heroVideoContent">
+          <h1 class="hero__title">THE<br>DEBUT<br>EP</h1>
+          <p class="hero__subtitle">Out Now on All Platforms</p>
+          <div class="hero__cta">
+            <a href="music.html" class="btn btn--filled">Listen Now</a>
+          </div>
+        </div>
+      </div>
 
-    <div class="hero__content">
-      <h1 class="hero__title">THE<br>DEBUT<br>EP</h1>
-      <p class="hero__subtitle">Out Now on All Platforms</p>
-      <div class="hero__cta">
-        <a href="music.html" class="btn btn--filled">Listen Now</a>
+      <div class="hero-scroll__text" id="heroText">
+        <h2 class="hero-scroll__heading">AS ROME BURNS</h2>
+        <p class="hero-scroll__description">
+          A UK-based four-piece alternative rock band formed in London in spring 2024.
+          Drawing inspiration from Nirvana, Rage Against The Machine, IDLES and Turnstile.
+        </p>
+        <p class="hero-scroll__description">
+          Our debut EP <em>Reactor</em> addresses political uncertainty, personal challenges,
+          and resilience. Built through packed London venue shows and a sold-out EP release.
+        </p>
+        <div class="hero-scroll__cta">
+          <a href="band.html" class="btn btn--filled">Meet The Band</a>
+          <a href="music.html" class="btn">Listen Now</a>
+        </div>
       </div>
     </div>
   </section>

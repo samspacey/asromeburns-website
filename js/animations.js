@@ -334,18 +334,97 @@
      Hero Spotlight Effect
      -------------------------------------------- */
   function initHeroSpotlight() {
-    const hero = document.getElementById('hero');
+    const videoContainer = document.getElementById('heroVideoContainer');
     const spotlight = document.getElementById('heroSpotlight');
 
-    if (!hero || !spotlight) return;
+    if (!videoContainer || !spotlight) return;
 
-    hero.addEventListener('mousemove', (e) => {
-      const rect = hero.getBoundingClientRect();
+    videoContainer.addEventListener('mousemove', (e) => {
+      const rect = videoContainer.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
       spotlight.style.left = `${x}px`;
       spotlight.style.top = `${y}px`;
+    });
+  }
+
+  /* --------------------------------------------
+     Hero Scroll Animation (Video zooms out, text appears)
+     -------------------------------------------- */
+  function initHeroScrollAnimation() {
+    const heroScroll = document.getElementById('heroScroll');
+    const videoContainer = document.getElementById('heroVideoContainer');
+    const videoContent = document.getElementById('heroVideoContent');
+    const heroText = document.getElementById('heroText');
+
+    if (!heroScroll || !videoContainer || !heroText) return;
+
+    // Check if on mobile
+    const isMobile = window.innerWidth <= 900;
+
+    function updateHeroScroll() {
+      const rect = heroScroll.getBoundingClientRect();
+      const scrollProgress = Math.min(1, Math.max(0, -rect.top / (rect.height - window.innerHeight)));
+
+      if (isMobile) {
+        // Mobile: Video shrinks and moves up, text appears below
+        const scale = 1 - (scrollProgress * 0.3); // Scale from 1 to 0.7
+        const translateY = scrollProgress * -20; // Move up
+
+        videoContainer.style.transform = `scale(${scale}) translateY(${translateY}%)`;
+        videoContainer.style.width = '100%';
+        videoContainer.style.height = `${100 - scrollProgress * 40}%`;
+        videoContainer.style.borderRadius = `${scrollProgress * 20}px`;
+        videoContainer.style.top = '0';
+        videoContainer.style.left = '0';
+
+      } else {
+        // Desktop: Video shrinks and moves to left
+        const scale = 1 - (scrollProgress * 0.45); // Scale from 1 to 0.55
+        const translateX = scrollProgress * -25; // Move left (percentage of viewport)
+        const width = 100 - (scrollProgress * 45); // Shrink width
+        const borderRadius = scrollProgress * 20; // Add border radius
+
+        videoContainer.style.width = `${width}%`;
+        videoContainer.style.height = `${100 - scrollProgress * 15}%`;
+        videoContainer.style.left = `${scrollProgress * 5}%`;
+        videoContainer.style.top = `${scrollProgress * 7.5}%`;
+        videoContainer.style.borderRadius = `${borderRadius}px`;
+        videoContainer.style.transform = `translateX(${translateX}%)`;
+      }
+
+      // Fade out video content, fade in text
+      if (videoContent) {
+        videoContent.style.opacity = 1 - (scrollProgress * 2); // Fade out faster
+      }
+
+      // Show text when scrolled enough
+      if (scrollProgress > 0.3) {
+        heroText.classList.add('is-visible');
+      } else {
+        heroText.classList.remove('is-visible');
+      }
+    }
+
+    // Throttled scroll handler
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateHeroScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // Initial update
+    updateHeroScroll();
+
+    // Update on resize
+    window.addEventListener('resize', () => {
+      updateHeroScroll();
     });
   }
 
@@ -363,6 +442,9 @@
 
     // Initialize hero spotlight
     initHeroSpotlight();
+
+    // Initialize hero scroll animation
+    initHeroScrollAnimation();
 
     // Initialize custom cursor
     new CustomCursor();
